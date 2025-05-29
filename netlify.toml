@@ -1,13 +1,5 @@
-[images]
-  remote_images = [
-    "https://source.unsplash.com/.*",
-    "https://images.unsplash.com/.*",
-    "https://ext.same-assets.com/.*",
-    "https://ugc.same-assets.com/.*"
-  ]
-
 [build]
-  command = "next build && next export -o static_build"
+  command = "npm run build:static"
   publish = "static_build"
 
 [build.environment]
