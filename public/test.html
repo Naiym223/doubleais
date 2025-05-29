@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    .tab-button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #ddd;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+    .tab-button.active {
+      background-color: #4a90e2;
+      color: white;
+    }
+    .tab-content {
+      display: none;
+      padding: 20px;
+      background-color: white;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .message {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <h1>Settings Test Page</h1>
+
+  <div id="message-container"></div>
+
+  <div class="tabs">
+    <button id="tab-api" class="tab-button active" onclick="openTab('api')">API Settings</button>
+    <button id="tab-permissions" class="tab-button" onclick="openTab('permissions')">Permissions</button>
+  </div>
+
+  <div id="api" class="tab-content active">
+    <h2>API Settings</h2>
+    <label for="api-key">API Key:</label>
+    <input type="text" id="api-key" placeholder="Enter your API key">
+  </div>
+
+  <div id="permissions" class="tab-content">
+    <h2>Permissions</h2>
+    <div>
+      <label>
+        <input type="checkbox" id="allow-user-keys"> Allow User API Keys
+      </label>
+    </div>
+    <div>
+      <label>
+        <input type="checkbox" id="maintenance-mode"> Maintenance Mode
+      </label>
+    </div>
+  </div>
+
+  <button onclick="saveSettings()">Save Settings</button>
+
+  <script>
+    // Function to handle tab switching
+    function openTab(tabName) {
+      // Hide all tabs
+      const tabContents = document.getElementsByClassName('tab-content');
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove('active');
+      }
+
+      // Remove active class from all buttons
+      const tabButtons = document.getElementsByClassName('tab-button');
+      for (let i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].classList.remove('active');
+      }
+
+      // Show the selected tab and activate the button
+      document.getElementById(tabName).classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+    }
+
+    // Function to save settings
+    function saveSettings() {
+      const settings = {
+        apiKey: document.getElementById('api-key').value,
+        allowUserKeys: document.getElementById('allow-user-keys').checked,
+        maintenanceMode: document.getElementById('maintenance-mode').checked
+      };
+
+      try {
+        localStorage.setItem('test_settings', JSON.stringify(settings));
+        showMessage('Settings saved successfully!', 'success');
+      } catch (error) {
+        showMessage('Error saving settings: ' + error.message, 'error');
+      }
+    }
+
+    // Function to display messages
+    function showMessage(text, type) {
+      const messageContainer = document.getElementById('message-container');
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message');
+      messageElement.classList.add(type);
+      messageElement.textContent = text;
+
+      messageContainer.innerHTML = '';
+      messageContainer.appendChild(messageElement);
+
+      setTimeout(() => {
+        messageElement.remove();
+      }, 3000);
+    }
+
+    // Load settings on page load
+    window.onload = function() {
+      try {
+        const savedSettings = localStorage.getItem('test_settings');
+        if (savedSettings) {
+          const settings = JSON.parse(savedSettings);
+          document.getElementById('api-key').value = settings.apiKey || '';
+          document.getElementById('allow-user-keys').checked = !!settings.allowUserKeys;
+          document.getElementById('maintenance-mode').checked = !!settings.maintenanceMode;
+        }
+      } catch (error) {
+        showMessage('Error loading settings: ' + error.message, 'error');
+      }
+    };
+  </script>
+</body>
+</html>
