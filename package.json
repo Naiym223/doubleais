@@ -2,12 +2,12 @@
   "name": "nextjs-shadcn",
   "version": "0.1.0",
   "private": true,
-"scripts": {
-  "dev": "next dev -H 0.0.0.0 --turbopack",
-  "build": "next build",
-  "build:static": "next build && next export -o static_build",
-  "start": "next start",
-  "lint": "next lint"
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "build:static": "next build && next export -o static_build"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.3",
